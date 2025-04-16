@@ -209,7 +209,7 @@ class PyBulletIKServer:
                 p.resetJointState(self.robot_id, i, angle)
             
             p.stepSimulation()
-            time.sleep(1./240.)
+            # time.sleep(1./240.)
 
     def check_end_effector_orientation(self):
         """Check and log end effector orientation"""
@@ -298,7 +298,7 @@ class PyBulletIKServer:
                     
                     # Move only the base joint
                     base_only_angles = [base_angle] + [p.getJointState(self.robot_id, i)[0] for i in range(1, self.num_joints)]
-                    self.execute_movement(base_only_angles, duration=0.5)
+                    self.execute_movement(base_only_angles, duration=0.1)
                     
                     # STAGE 2: Move arm above target while keeping base joint fixed
                     # Use the transformed coordinates for the target position
@@ -311,7 +311,7 @@ class PyBulletIKServer:
                     target_angles = [base_angle] + arm_angles
                     
                     # Execute the movement
-                    self.execute_movement(target_angles, duration=1.0)
+                    self.execute_movement(target_angles, duration=0.1)
                     
                     # Check orientation after arm movement
                     orientation = self.check_end_effector_orientation()
@@ -328,8 +328,7 @@ class PyBulletIKServer:
                     
                     # STAGE 4: Wait for 1 second at target position
                     print(f"Target reached. Waiting for 1 second...")
-                    time.sleep(1.0)
-                    print(base_angle,arm_angles)
+                    # time.sleep(1.0)
                     
                     # STAGE 5: Return to home position
                     self.return_to_home(duration=1.0)
